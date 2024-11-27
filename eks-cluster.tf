@@ -11,7 +11,17 @@ module "eks" {
   iam_role_arn = aws_iam_role.eks_cluster.arn
 
   eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64_GPU"
+    ami_type = "AL2023_x86_64_NVIDIA"
+    disk_size = 50
+    block_device_mappings = {
+      xvda = {
+        device_name = "/dev/xvda"
+        ebs         = {
+          volume_size           = 100
+          volume_type           = "gp2"
+        }
+      }
+    }
   }
 
   eks_managed_node_groups = {
